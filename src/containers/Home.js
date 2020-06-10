@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PageHeader, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Container, Row, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { API } from 'aws-amplify';
 import { useAppContext } from '../libs/contextLib';
@@ -38,8 +38,46 @@ export default function Home() {
 		return [{}].concat(games).map((game, i) =>
 			i !== 0 ? (
 				<LinkContainer key={game.gameId} to={`/games/${game.date_machine}`}>
-					<ListGroupItem header={game.date_machine.split('_')[1]}>
-						{'Created: ' + new Date(parseInt(game.date_machine.split('_')[0])).toLocaleString()}
+					<ListGroupItem>
+						<Container>
+							<Row>
+								<Col xs={4}>
+									<div className="games-list-header">{game.date_machine.split('_')[1]}</div>
+								</Col>
+								<Col>
+									<div className="games-list-player">{game.players[0]}</div>
+								</Col>
+								<Col>
+									<div className="games-list-player">{game.players[1]}</div>
+								</Col>
+								<Col>
+									<div className="games-list-player">{game.players[2]}</div>
+								</Col>
+								<Col>
+									<div className="games-list-player">{game.players[3]}</div>
+								</Col>
+							</Row>
+							<Row>
+								<Col xs={4}>
+									<div>
+										{'Created: ' +
+											new Date(parseInt(game.date_machine.split('_')[0])).toLocaleString()}
+									</div>
+								</Col>
+								<Col>
+									<div className="games-list-score">{game.scores[0]}</div>
+								</Col>
+								<Col>
+									<div className="games-list-score">{game.scores[1]}</div>
+								</Col>
+								<Col>
+									<div className="games-list-score">{game.scores[2]}</div>
+								</Col>
+								<Col>
+									<div className="games-list-score">{game.scores[3]}</div>
+								</Col>
+							</Row>
+						</Container>
 					</ListGroupItem>
 				</LinkContainer>
 			) : (
@@ -66,7 +104,7 @@ export default function Home() {
 	function renderGames() {
 		return (
 			<div className="games">
-				<PageHeader>Your Games</PageHeader>
+				<h2>Your Games</h2>
 				<ListGroup>{!isLoading && renderGamesList(games)}</ListGroup>
 			</div>
 		);

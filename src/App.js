@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { Badge, Navbar, Nav, NavItem } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { Navbar, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Auth } from 'aws-amplify';
 
@@ -42,26 +42,24 @@ function App() {
 	return (
 		!isAuthenticating && (
 			<div className="App container">
-				<Navbar inverse fluid collapseOnSelect>
-					<Navbar.Header>
-						<Navbar.Brand>
-							<Link to="/">
-								SCOREBOARD <Badge>0</Badge>
-							</Link>
-						</Navbar.Brand>
-						<Navbar.Toggle />
-					</Navbar.Header>
-					<Navbar.Collapse>
-						<Nav pullRight>
+				<Navbar bg="dark" variant="dark" expand="lg">
+					{/* <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark"> */}
+					<LinkContainer to="/">
+						<Navbar.Brand>SCOREBOARD</Navbar.Brand>
+					</LinkContainer>
+					<Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+					<Navbar.Collapse id="basic-navbar-nav">
+						<Nav className="mr-auto">
 							{isAuthenticated ? (
-								<NavItem onClick={handleLogout}>Logout</NavItem>
+								<Nav.Link onClick={handleLogout}>Logout</Nav.Link>
 							) : (
 								<>
 									<LinkContainer to="/signup">
-										<NavItem>Signup</NavItem>
+										<Nav.Link>Signup</Nav.Link>
 									</LinkContainer>
 									<LinkContainer to="/login">
-										<NavItem>Login</NavItem>
+										<Nav.Link>Login</Nav.Link>
 									</LinkContainer>
 								</>
 							)}

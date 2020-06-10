@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { HelpBlock, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { FormGroup, FormControl, Form, Button } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
-import LoaderButton from '../components/LoaderButton';
 import { useAppContext } from '../libs/contextLib';
 import { useFormFields } from '../libs/hooksLib';
 import { onError } from '../libs/errorLib';
@@ -65,44 +64,50 @@ export default function Signup() {
 
 	function renderConfirmationForm() {
 		return (
-			<form onSubmit={handleConfirmationSubmit}>
-				<FormGroup controlId="confirmationCode" bsSize="large">
-					<ControlLabel>Confirmation Code</ControlLabel>
+			<Form onSubmit={handleConfirmationSubmit}>
+				<FormGroup controlId="confirmationCode">
+					<Form.Label>Confirmation Code</Form.Label>
 					<FormControl autoFocus type="tel" onChange={handleFieldChange} value={fields.confirmationCode} />
-					<HelpBlock>Please check your email for the code.</HelpBlock>
+					<Form.Text>Please check your email for the code.</Form.Text>
 				</FormGroup>
-				<LoaderButton
+				<Button
+					variant="primary"
 					block
 					type="submit"
-					bsSize="large"
-					isLoading={isLoading}
+					onClick={isLoading ? handleConfirmationSubmit : null}
 					disabled={!validateConfirmationForm()}
 				>
-					Verify
-				</LoaderButton>
-			</form>
+					{isLoading ? 'Loading…' : 'Verify'}
+				</Button>
+			</Form>
 		);
 	}
 
 	function renderForm() {
 		return (
-			<form onSubmit={handleSubmit}>
-				<FormGroup controlId="email" bsSize="large">
-					<ControlLabel>Email</ControlLabel>
+			<Form onSubmit={handleSubmit}>
+				<FormGroup controlId="email">
+					<Form.Label>Email</Form.Label>
 					<FormControl autoFocus type="email" value={fields.email} onChange={handleFieldChange} />
 				</FormGroup>
-				<FormGroup controlId="password" bsSize="large">
-					<ControlLabel>Password</ControlLabel>
+				<FormGroup controlId="password">
+					<Form.Label>Password</Form.Label>
 					<FormControl type="password" value={fields.password} onChange={handleFieldChange} />
 				</FormGroup>
-				<FormGroup controlId="confirmPassword" bsSize="large">
-					<ControlLabel>Confirm Password</ControlLabel>
+				<FormGroup controlId="confirmPassword">
+					<Form.Label>Confirm Password</Form.Label>
 					<FormControl type="password" onChange={handleFieldChange} value={fields.confirmPassword} />
 				</FormGroup>
-				<LoaderButton block type="submit" bsSize="large" isLoading={isLoading} disabled={!validateForm()}>
-					Signup
-				</LoaderButton>
-			</form>
+				<Button
+					variant="primary"
+					block
+					type="submit"
+					onClick={isLoading ? handleSubmit : null}
+					disabled={!validateForm()}
+				>
+					{isLoading ? 'Loading…' : 'Signup'}
+				</Button>
+			</Form>
 		);
 	}
 

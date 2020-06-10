@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { FormGroup, FormControl, Form, Button } from 'react-bootstrap';
 import { API } from 'aws-amplify';
 
-import LoaderButton from '../components/LoaderButton';
 import { onError } from '../libs/errorLib';
 import machinesArray from '../machinesArray';
 import './NewGame.css';
@@ -56,24 +55,24 @@ export default function NewGame() {
 		<div className="NewGame">
 			<form onSubmit={handleSubmit}>
 				<FormGroup controlId="player1">
-					<ControlLabel>Player 1</ControlLabel>
+					<Form.Label>Player 1</Form.Label>
 					<FormControl value={player1} type="text" onChange={(e) => setPlayer1(e.target.value)} />
 				</FormGroup>
 				<FormGroup controlId="player2">
-					<ControlLabel>Player 2</ControlLabel>
+					<Form.Label>Player 2</Form.Label>
 					<FormControl value={player2} type="text" onChange={(e) => setPlayer2(e.target.value)} />
 				</FormGroup>
 				<FormGroup controlId="player3">
-					<ControlLabel>Player 3</ControlLabel>
+					<Form.Label>Player 3</Form.Label>
 					<FormControl value={player3} type="text" onChange={(e) => setPlayer3(e.target.value)} />
 				</FormGroup>
 				<FormGroup controlId="player4">
-					<ControlLabel>Player 4</ControlLabel>
+					<Form.Label>Player 4</Form.Label>
 					<FormControl value={player4} type="text" onChange={(e) => setPlayer4(e.target.value)} />
 				</FormGroup>
 				<FormGroup controlId="machine">
-					<ControlLabel>machine</ControlLabel>
-					<FormControl value={machine} componentClass="select" onChange={(e) => setMachine(e.target.value)}>
+					<Form.Label>machine</Form.Label>
+					<FormControl value={machine} as="select" onChange={(e) => setMachine(e.target.value)}>
 						{sortedMachinesArray.map((machine, index) => {
 							return (
 								<option key={index} value={machine}>
@@ -83,16 +82,9 @@ export default function NewGame() {
 						})}
 					</FormControl>
 				</FormGroup>
-				<LoaderButton
-					block
-					type="submit"
-					bsSize="large"
-					bsStyle="primary"
-					isLoading={isLoading}
-					disabled={!validateForm()}
-				>
-					Create
-				</LoaderButton>
+				<Button block type="submit" onClick={isLoading ? handleSubmit : null} disabled={!validateForm()}>
+					{isLoading ? 'Loading…' : 'Create'}
+				</Button>
 			</form>
 		</div>
 	);

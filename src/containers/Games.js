@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { API, Storage } from 'aws-amplify';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import LoaderButton from '../components/LoaderButton';
+import { API } from 'aws-amplify';
+import { FormGroup, FormControl, Form, Col, Button } from 'react-bootstrap';
 import { onError } from '../libs/errorLib';
 import './Games.css';
 
@@ -30,7 +29,6 @@ export default function Games() {
 		async function onLoad() {
 			try {
 				const game = await loadGame();
-				console.log(game);
 				setPlayer1(game.players[0]);
 				setPlayer2(game.players[1]);
 				setPlayer3(game.players[2]);
@@ -57,10 +55,37 @@ export default function Games() {
 		return player1.length > 0 && score1.length > 0 && score2.length > 0 && score3.length > 0 && score4.length > 0;
 	}
 
+	function saveGame(game) {
+		return API.put('pinball-scoreboard', `/games/${date_machine}`, {
+			body: game,
+		});
+	}
+
 	async function handleSubmit(event) {
 		event.preventDefault();
 
 		setIsLoading(true);
+
+		try {
+			await saveGame({
+				player1,
+				player2,
+				player3,
+				player4,
+				score1,
+				score2,
+				score3,
+				score4,
+			});
+			history.push('/');
+		} catch (e) {
+			onError(e);
+			setIsLoading(false);
+		}
+	}
+
+	function deleteNote() {
+		return API.del('pinball-scoreboard', `/games/${date_machine}`);
 	}
 
 	async function handleDelete(event) {
@@ -73,70 +98,78 @@ export default function Games() {
 		}
 
 		setIsDeleting(true);
+
+		try {
+			await deleteNote();
+			history.push('/');
+		} catch (e) {
+			onError(e);
+			setIsDeleting(false);
+		}
 	}
 
 	return (
 		<div className="Games">
 			{game && (
-				<form inline="true" onSubmit={handleSubmit}>
-					<FormGroup controlId="player1">
-						<ControlLabel>Player 1</ControlLabel>
-						<FormControl value={player1} type="text" onChange={(e) => setPlayer1(e.target.value)} />
-					</FormGroup>{' '}
-					<FormGroup controlId="score1">
-						<ControlLabel>Player 1 Score</ControlLabel>
-						<FormControl value={score1} type="number" onChange={(e) => setScore1(e.target.value)} />
-					</FormGroup>{' '}
-					<FormGroup controlId="player2">
-						<ControlLabel>Player 2</ControlLabel>
-						<FormControl value={player2} type="text" onChange={(e) => setPlayer2(e.target.value)} />
-					</FormGroup>{' '}
-					<FormGroup controlId="score2">
-						<ControlLabel>Player 2 Score</ControlLabel>
-						<FormControl value={score2} type="number" onChange={(e) => setScore2(e.target.value)} />
-					</FormGroup>{' '}
-					<FormGroup controlId="player3">
-						<ControlLabel>Player 3</ControlLabel>
-						<FormControl value={player3} type="text" onChange={(e) => setPlayer3(e.target.value)} />
-					</FormGroup>{' '}
-					<FormGroup controlId="score3">
-						<ControlLabel>Player 3 Score</ControlLabel>
-						<FormControl value={score3} type="number" onChange={(e) => setScore3(e.target.value)} />
-					</FormGroup>{' '}
-					<FormGroup controlId="player4">
-						<ControlLabel>Player 4</ControlLabel>
-						<FormControl value={player4} type="text" onChange={(e) => setPlayer4(e.target.value)} />
-					</FormGroup>{' '}
-					<FormGroup controlId="score4">
-						<ControlLabel>Player 4 Score</ControlLabel>
-						<FormControl value={score4} type="number" onChange={(e) => setScore4(e.target.value)} />
-					</FormGroup>{' '}
+				<Form onSubmit={handleSubmit}>
+					<Form.Row>
+						<FormGroup as={Col} controlId="player1">
+							<Form.Label>Player 1</Form.Label>
+							<FormControl value={player1} type="text" onChange={(e) => setPlayer1(e.target.value)} />
+						</FormGroup>
+						<FormGroup as={Col} controlId="score1">
+							<Form.Label>Player 1 Score</Form.Label>
+							<FormControl value={score1} type="number" onChange={(e) => setScore1(e.target.value)} />
+						</FormGroup>
+					</Form.Row>
+					<Form.Row>
+						<FormGroup as={Col} controlId="player2">
+							<Form.Label>Player 2</Form.Label>
+							<FormControl value={player2} type="text" onChange={(e) => setPlayer2(e.target.value)} />
+						</FormGroup>
+						<FormGroup as={Col} controlId="score2">
+							<Form.Label>Player 2 Score</Form.Label>
+							<FormControl value={score2} type="number" onChange={(e) => setScore2(e.target.value)} />
+						</FormGroup>
+					</Form.Row>
+					<Form.Row>
+						<FormGroup as={Col} controlId="player3">
+							<Form.Label>Player 3</Form.Label>
+							<FormControl value={player3} type="text" onChange={(e) => setPlayer3(e.target.value)} />
+						</FormGroup>
+						<FormGroup as={Col} controlId="score3">
+							<Form.Label>Player 3 Score</Form.Label>
+							<FormControl value={score3} type="number" onChange={(e) => setScore3(e.target.value)} />
+						</FormGroup>
+					</Form.Row>
+					<Form.Row>
+						<FormGroup as={Col} controlId="player4">
+							<Form.Label>Player 4</Form.Label>
+							<FormControl value={player4} type="text" onChange={(e) => setPlayer4(e.target.value)} />
+						</FormGroup>
+						<FormGroup as={Col} controlId="score4">
+							<Form.Label>Player 4 Score</Form.Label>
+							<FormControl value={score4} type="number" onChange={(e) => setScore4(e.target.value)} />
+						</FormGroup>
+					</Form.Row>
 					<FormGroup controlId="machine">
-						<ControlLabel>Machine</ControlLabel>
+						<Form.Label>Machine</Form.Label>
 						<FormControl value={machine} type="text" width="100%" readOnly />
-					</FormGroup>{' '}
-					<LoaderButton
+					</FormGroup>
+					<Button
 						block
 						type="submit"
-						bsSize="large"
-						bsStyle="primary"
-						isLoading={isLoading}
+						vaiant="primary"
+						onClick={isLoading ? handleSubmit : null}
 						disabled={!validateForm()}
 						width="100%"
 					>
-						Save
-					</LoaderButton>
-					<LoaderButton
-						block
-						bsSize="large"
-						bsStyle="danger"
-						width="100%"
-						onClick={handleDelete}
-						isLoading={isDeleting}
-					>
-						Delete
-					</LoaderButton>
-				</form>
+						{isLoading ? 'Loading…' : 'Save'}
+					</Button>
+					<Button block variant="danger" width="100%" onClick={handleDelete}>
+						{isDeleting ? 'Loading…' : 'Delete'}
+					</Button>
+				</Form>
 			)}
 		</div>
 	);

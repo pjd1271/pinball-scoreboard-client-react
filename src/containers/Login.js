@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { Button, FormGroup, FormControl, Form } from 'react-bootstrap';
 
-import LoaderButton from '../components/LoaderButton';
+// import LoaderButton from '../components/LoaderButton';
 import { useAppContext } from '../libs/contextLib';
 import { useFormFields } from '../libs/hooksLib';
 import { onError } from '../libs/errorLib';
@@ -39,19 +39,25 @@ export default function Login() {
 
 	return (
 		<div className="Login">
-			<form onSubmit={handleSubmit}>
-				<FormGroup controlId="email" bsSize="large">
-					<ControlLabel>Email</ControlLabel>
+			<Form onSubmit={handleSubmit}>
+				<FormGroup controlId="email">
+					<Form.Label>Email</Form.Label>
 					<FormControl autoFocus type="email" value={fields.email} onChange={handleFieldChange} />
 				</FormGroup>
-				<FormGroup controlId="password" bsSize="large">
-					<ControlLabel>Password</ControlLabel>
+				<FormGroup controlId="password">
+					<Form.Label>Password</Form.Label>
 					<FormControl type="password" value={fields.password} onChange={handleFieldChange} />
 				</FormGroup>
-				<LoaderButton block type="submit" bsSize="large" isLoading={isLoading} disabled={!validateForm()}>
-					Login
-				</LoaderButton>
-			</form>
+				<Button
+					variant="primary"
+					block
+					type="submit"
+					onClick={isLoading ? handleSubmit : null}
+					disabled={!validateForm()}
+				>
+					{isLoading ? 'Loading…' : 'Login'}
+				</Button>
+			</Form>
 		</div>
 	);
 }

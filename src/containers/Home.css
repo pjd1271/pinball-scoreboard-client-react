@@ -23,3 +23,17 @@
 .Home .games p {
 	color: #666;
 }
+
+.Home .games .games-list-header {
+	font-size: larger;
+	font-weight: bold;
+}
+
+.Home .games .games-list-player {
+	text-align: center;
+}
+
+.Home .games .games-list-score {
+	text-align: center;
+	font-weight: bold;
+}
