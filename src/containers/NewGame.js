@@ -29,14 +29,8 @@ export default function NewGame() {
 		try {
 			await createGame({
 				machine,
-				player1,
-				player2,
-				player3,
-				player4,
-				score1: 0,
-				score2: 0,
-				score3: 0,
-				score4: 0,
+				players: [player1, player2, player3, player4],
+				scores: [0, 0, 0, 0],
 			});
 			history.push('/');
 		} catch (e) {

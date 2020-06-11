@@ -39,9 +39,6 @@ export default function Games() {
 				setScore4(game.scores[3]);
 				setMachine(game.date_machine.split('_')[1]);
 
-				//     const { content, attachment } = note;
-
-				//     setContent(content);
 				setGame(game);
 			} catch (e) {
 				onError(e);
@@ -68,14 +65,8 @@ export default function Games() {
 
 		try {
 			await saveGame({
-				player1,
-				player2,
-				player3,
-				player4,
-				score1,
-				score2,
-				score3,
-				score4,
+				players: [player1, player2, player3, player4],
+				scores: [parseInt(score1), parseInt(score2), parseInt(score3), parseInt(score4)],
 			});
 			history.push('/');
 		} catch (e) {
@@ -84,7 +75,7 @@ export default function Games() {
 		}
 	}
 
-	function deleteNote() {
+	function deleteGame() {
 		return API.del('pinball-scoreboard', `/games/${date_machine}`);
 	}
 
@@ -100,7 +91,7 @@ export default function Games() {
 		setIsDeleting(true);
 
 		try {
-			await deleteNote();
+			await deleteGame();
 			history.push('/');
 		} catch (e) {
 			onError(e);

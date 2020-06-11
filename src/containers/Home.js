@@ -65,16 +65,16 @@ export default function Home() {
 									</div>
 								</Col>
 								<Col>
-									<div className="games-list-score">{game.scores[0]}</div>
+									<div className="games-list-score">{game.scores[0].toLocaleString()}</div>
 								</Col>
 								<Col>
-									<div className="games-list-score">{game.scores[1]}</div>
+									<div className="games-list-score">{game.scores[1].toLocaleString()}</div>
 								</Col>
 								<Col>
-									<div className="games-list-score">{game.scores[2]}</div>
+									<div className="games-list-score">{game.scores[2].toLocaleString()}</div>
 								</Col>
 								<Col>
-									<div className="games-list-score">{game.scores[3]}</div>
+									<div className="games-list-score">{game.scores[3].toLocaleString()}</div>
 								</Col>
 							</Row>
 						</Container>
