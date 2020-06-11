@@ -23,7 +23,11 @@ export default function Home() {
 			} catch (e) {
 				onError(e);
 			}
-
+			// games.map(function (game, i) {
+			// 	if (game.score !== 0 && game.score === game.highestScore) {
+			// 		setHighestScoreIndex(i);
+			// 	}
+			// });
 			setIsLoading(false);
 		}
 
@@ -44,18 +48,13 @@ export default function Home() {
 								<Col xs={4}>
 									<div className="games-list-header">{game.date_machine.split('_')[1]}</div>
 								</Col>
-								<Col>
-									<div className="games-list-player">{game.players[0]}</div>
-								</Col>
-								<Col>
-									<div className="games-list-player">{game.players[1]}</div>
-								</Col>
-								<Col>
-									<div className="games-list-player">{game.players[2]}</div>
-								</Col>
-								<Col>
-									<div className="games-list-player">{game.players[3]}</div>
-								</Col>
+								{game.players.map(function (player, i) {
+									return (
+										<Col key={i}>
+											<div className="games-list-player">{player}</div>
+										</Col>
+									);
+								})}
 							</Row>
 							<Row>
 								<Col xs={4}>
@@ -64,18 +63,21 @@ export default function Home() {
 											new Date(parseInt(game.date_machine.split('_')[0])).toLocaleString()}
 									</div>
 								</Col>
-								<Col>
-									<div className="games-list-score">{game.scores[0].toLocaleString()}</div>
-								</Col>
-								<Col>
-									<div className="games-list-score">{game.scores[1].toLocaleString()}</div>
-								</Col>
-								<Col>
-									<div className="games-list-score">{game.scores[2].toLocaleString()}</div>
-								</Col>
-								<Col>
-									<div className="games-list-score">{game.scores[3].toLocaleString()}</div>
-								</Col>
+								{game.scores.map(function (score, i) {
+									if (score !== 0 && score === game.highestScore) {
+										return (
+											<Col key={i} className="games-list-high-score">
+												<div className="games-list-score">{score.toLocaleString()}</div>
+											</Col>
+										);
+									} else {
+										return (
+											<Col key={i}>
+												<div className="games-list-score">{score.toLocaleString()}</div>
+											</Col>
+										);
+									}
+								})}
 							</Row>
 						</Container>
 					</ListGroupItem>
