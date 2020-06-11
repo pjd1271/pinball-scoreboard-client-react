@@ -49,7 +49,11 @@ export default function Games() {
 	}, [date_machine]);
 
 	function validateForm() {
-		return player1.length > 0 && score1.length > 0 && score2.length > 0 && score3.length > 0 && score4.length > 0;
+		if (!isNaN(score1) && !isNaN(score2) && !isNaN(score3) && !isNaN(score4)) {
+			return score1 >= 0 && score2 >= 0 && score3 >= 0 && score4 >= 0;
+		} else {
+			return false;
+		}
 	}
 
 	function saveGame(game) {
@@ -104,45 +108,26 @@ export default function Games() {
 			{game && (
 				<Form onSubmit={handleSubmit}>
 					<Form.Row>
-						<FormGroup as={Col} controlId="player1">
-							<Form.Label>Player 1</Form.Label>
-							<FormControl value={player1} type="text" onChange={(e) => setPlayer1(e.target.value)} />
+						<FormGroup as={Col} controlId="player1Score">
+							<Form.Label className="game-score-label">{player1}</Form.Label>
+							<FormControl value={score1} type="text" onChange={(e) => setScore1(e.target.value)} />
 						</FormGroup>
-						<FormGroup as={Col} controlId="score1">
-							<Form.Label>Player 1 Score</Form.Label>
-							<FormControl value={score1} type="number" onChange={(e) => setScore1(e.target.value)} />
-						</FormGroup>
-					</Form.Row>
-					<Form.Row>
-						<FormGroup as={Col} controlId="player2">
-							<Form.Label>Player 2</Form.Label>
-							<FormControl value={player2} type="text" onChange={(e) => setPlayer2(e.target.value)} />
-						</FormGroup>
-						<FormGroup as={Col} controlId="score2">
-							<Form.Label>Player 2 Score</Form.Label>
+						<FormGroup as={Col} controlId="player2Score">
+							<Form.Label className="game-score-label">{player2}</Form.Label>
 							<FormControl value={score2} type="number" onChange={(e) => setScore2(e.target.value)} />
 						</FormGroup>
 					</Form.Row>
 					<Form.Row>
-						<FormGroup as={Col} controlId="player3">
-							<Form.Label>Player 3</Form.Label>
-							<FormControl value={player3} type="text" onChange={(e) => setPlayer3(e.target.value)} />
+						<FormGroup as={Col} controlId="player3Score">
+							<Form.Label className="game-score-label">{player3}</Form.Label>
+							<FormControl value={score3} type="text" onChange={(e) => setScore3(e.target.value)} />
 						</FormGroup>
-						<FormGroup as={Col} controlId="score3">
-							<Form.Label>Player 3 Score</Form.Label>
-							<FormControl value={score3} type="number" onChange={(e) => setScore3(e.target.value)} />
-						</FormGroup>
-					</Form.Row>
-					<Form.Row>
-						<FormGroup as={Col} controlId="player4">
-							<Form.Label>Player 4</Form.Label>
-							<FormControl value={player4} type="text" onChange={(e) => setPlayer4(e.target.value)} />
-						</FormGroup>
-						<FormGroup as={Col} controlId="score4">
-							<Form.Label>Player 4 Score</Form.Label>
+						<FormGroup as={Col} controlId="player4Score">
+							<Form.Label className="game-score-label">{player4}</Form.Label>
 							<FormControl value={score4} type="number" onChange={(e) => setScore4(e.target.value)} />
 						</FormGroup>
 					</Form.Row>
+
 					<FormGroup controlId="machine">
 						<Form.Label>Machine</Form.Label>
 						<FormControl value={machine} type="text" width="100%" readOnly />

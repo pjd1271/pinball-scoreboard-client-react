@@ -6,3 +6,9 @@
 	height: 30px;
 	font-size: 24px;
 }
+
+.Games .game-score-label {
+	font-size: larger;
+	font-weight: bolder;
+	text-align: center;
+}
